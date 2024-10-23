@@ -98,7 +98,7 @@ int right(int i)
 
 void canEat(int i)
 {
-    if(isHungry(i) && !isEating(left(i)) && !isEating(left(i)))
+    if(isHungry(i) && !isEating(left(i)) && !isEating(right(i)))
     {
         states[i] = EATING;
         up(philosophers[i]);
