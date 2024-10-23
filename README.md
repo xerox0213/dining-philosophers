@@ -1,1 +1,1 @@
-# dining-philosophers-
+# Dining philosophers
