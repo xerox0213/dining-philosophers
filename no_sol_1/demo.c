@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "../library/sem.h"
@@ -37,7 +38,7 @@ int main(void)
 
 void philosopher(int i)
 {
-    while (1)
+    while (true)
     {
         think(i);
         takeFork(i);
