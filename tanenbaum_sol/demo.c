@@ -13,7 +13,7 @@ int philosophers[N];
 enum { THINKING, HUNGRY, EATING } state;
 
 void philosopher(int i);
-void think();
+void think(int i);
 void takeForks(int i);
 void eat(int i);
 void putForks(int i);
@@ -21,11 +21,12 @@ int left(int i);
 int right(int i);
 bool isHungry(int i);
 bool isEating(int i);
+void canEat(int i);
 
 int main(void)
 {
     int shmid = createShm(sizeof(int) * N);
-    int * states = attachShm(shmid);
+    states = attachShm(shmid);
 
     for(int i = 0; i < N; i++)
     {
@@ -34,7 +35,8 @@ int main(void)
         initSem(philosophers[i], 1);
     }
 
-    int mutex = createSem();
+    mutex = createSem();
+    initSem(mutex, 1);
 
     for(int i = 0; i < N; i++)
     {
@@ -43,6 +45,13 @@ int main(void)
             philosopher(i);
         }
     }
+
+
+    for (int i = 0; i < N; i++)
+    {
+        wait(NULL);
+    }
+    
 }
 
 void philosopher(int i)
