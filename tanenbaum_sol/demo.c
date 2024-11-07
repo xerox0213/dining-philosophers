@@ -68,7 +68,7 @@ void takeForks(int i)
     states[i] = HUNGRY;
     canEat(i);
     up(mutex);
-    down(states[i]);
+    down(philosophers[i]);
 }
 
 void eat(int i)
