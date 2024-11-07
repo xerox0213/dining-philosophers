@@ -1,5 +1,5 @@
-
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "../library/sem.h"
@@ -33,14 +33,15 @@ int main(void)
         }
     }
 
-    for (int i = 0; i < N; i++) wait(NULL);
-    removeSem(mutex);
-    for(int i = 0; i < N; i++) removeSem(forks[i]);
+    for (int i = 0; i < N; i++)
+    {
+        wait(NULL);
+    }
 }
 
 void philosopher(int i)
 {
-    while (1)
+    while (true)
     {
         think(i);
         down(mutex);

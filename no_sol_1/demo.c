@@ -28,6 +28,11 @@ int main(void)
             philosopher(i);
         }
     }
+
+    for(int i = 0; i < N; i++)
+    {
+        wait(NULL);
+    }
 }
 
 void philosopher(int i)
