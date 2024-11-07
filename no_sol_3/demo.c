@@ -42,29 +42,15 @@ void philosopher(int i)
 {
     while (1)
     {
-        // Pense pendant un certain temps
         think(i);
-
         down(mutex);
-        
-        // Tente de prendre la fourchette à gauche de son plat de spaghetti
         takeFork(i);
-
-        // Tente de prendre la fourchette à droite de son plat de spaghetti
         takeFork((i + 1) % N);
-
-        // Arrivée ici il a les deux fourchettes, il peut donc manger son plat
         eat(i);
-
-        // Redépose la fourchette de gauche
         putFork(i);
-
-        // Redépose la fourchette de droite
         putFork((i + 1) % N);
-        
         up(mutex);
     }
-    
 }
 
 void think(int i)
