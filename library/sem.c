@@ -54,17 +54,6 @@ void down(int semid)
     }
 }
 
-int getVal(int semid)
-{
-    int val = semctl(semid, 0, GETVAL);
-    if(val == -1)
-    {
-        perror("semctl");
-        exit(EXIT_FAILURE);
-    }
-    return val;
-}
-
 void removeSem(int semid)
 {
     if(semctl(semid, 0, IPC_RMID) == -1)
