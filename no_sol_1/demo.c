@@ -42,12 +42,12 @@ void philosopher(int i)
     {
         think(i);
         takeFork(i);
+        sleep(1); // force l'interblocage en donnant a chaque philosophe une fourchette
         takeFork((i + 1) % N);
         eat(i);
         putFork(i);
         putFork((i + 1) % N);
     }
-    
 }
 
 void think(int i)
