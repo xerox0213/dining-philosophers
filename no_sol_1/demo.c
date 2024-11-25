@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include "../library/sem.h"
 
-const int N = 5;
-int forks[N];
+#define N 5
+int forkSemaphores[N];
 
 void philosopher(int i);
 void think(int i);
@@ -18,8 +18,8 @@ int main(void)
 
     for(int i = 0; i < N; i++)
     {
-        forks[i] = createSem();
-        initSem(forks[i], 1);
+        forkSemaphores[i] = createSem();
+        initSem(forkSemaphores[i], 1);
     }
 
     for(int i = 0; i < N; i++)
@@ -58,8 +58,8 @@ void think(int i)
 
 void takeFork(int i)
 {
-    int fork = forks[i];
-    down(fork);
+    int forkSemaphore = forkSemaphores[i];
+    down(forkSemaphore);
 }
 
 void eat(int i)
@@ -70,6 +70,6 @@ void eat(int i)
 
 void putFork(int i)
 {
-    int fork = forks[i];
-    up(fork);
+    int forkSemaphore = forkSemaphores[i];
+    up(forkSemaphore);
 }

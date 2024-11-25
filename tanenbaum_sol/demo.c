@@ -5,10 +5,10 @@
 #include "../library/sem.h"
 #include "../library/shm.h"
 
-const int N = 5;
-int * states;
-int mutex;
-int philosophers[N];
+#define N 5
+int * philosopherStates;
+int mutexSemaphore;
+int philosopherSemaphores[N];
 
 enum { THINKING, HUNGRY, EATING } state;
 
@@ -26,17 +26,17 @@ void canEat(int i);
 int main(void)
 {
     int shmid = createShm(sizeof(int) * N);
-    states = attachShm(shmid);
+    philosopherStates = attachShm(shmid);
 
     for(int i = 0; i < N; i++)
     {
-        states[i] = THINKING;
-        philosophers[i] = createSem();
-        initSem(philosophers[i], 1);
+        philosopherStates[i] = THINKING;
+        philosopherSemaphores[i] = createSem();
+        initSem(philosopherSemaphores[i], 0);
     }
 
-    mutex = createSem();
-    initSem(mutex, 1);
+    mutexSemaphore = createSem();
+    initSem(mutexSemaphore, 1);
 
     for(int i = 0; i < N; i++)
     {
@@ -73,11 +73,11 @@ void think(int i)
 
 void takeForks(int i)
 {
-    down(mutex);
-    states[i] = HUNGRY;
+    down(mutexSemaphore);
+    philosopherStates[i] = HUNGRY;
     canEat(i);
-    up(mutex);
-    down(philosophers[i]);
+    up(mutexSemaphore);
+    down(philosopherSemaphores[i]);
 }
 
 void eat(int i)
@@ -88,11 +88,11 @@ void eat(int i)
 
 void putForks(int i)
 {
-    down(mutex);
-    states[i] = THINKING;
+    down(mutexSemaphore);
+    philosopherStates[i] = THINKING;
     canEat(left(i));
     canEat(right(i));
-    up(mutex);
+    up(mutexSemaphore);
 }
 
 int left(int i)
@@ -109,17 +109,17 @@ void canEat(int i)
 {
     if(isHungry(i) && !isEating(left(i)) && !isEating(right(i)))
     {
-        states[i] = EATING;
-        up(philosophers[i]);
+        philosopherStates[i] = EATING;
+        up(philosopherSemaphores[i]);
     }
 }
 
 bool isEating(int i)
 {
-    return states[i] == EATING;
+    return philosopherStates[i] == EATING;
 }
 
 bool isHungry(int i)
 {
-    return states[i] == HUNGRY;
+    return philosopherStates[i] == HUNGRY;
 }
